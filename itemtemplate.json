@@ -1,0 +1,40 @@
+{
+	"sections": [
+		{
+			"name": "",
+			"title": "",
+			"fields": [
+				{
+					"k": "string",
+					"n": "url",
+					"t": "host",
+					"v": "SSH_HOST"
+				},
+				{
+					"k": "string",
+					"n": "username",
+					"t": "username",
+					"v": "SSH_USERNAME"
+				},
+				{
+					"k": "concealed",
+					"n": "password",
+					"t": "password",
+					"v": "SSH_PASSWORD"
+				},
+				{
+					"k": "string",
+					"n": "ssh_public_key",
+					"t": "public key",
+					"v": "SSH_PUBLIC_KEY"
+				},
+				{
+					"k": "concealed",
+					"n": "ssh_private_key",
+					"t": "private key",
+					"v": "SSH_PRIVATE_KEY"
+				}
+			]
+		}
+	]
+}

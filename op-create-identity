@@ -1,0 +1,165 @@
+#!/bin/bash
+
+dirname="$(dirname "$(realpath $0)")"
+source "$dirname/common.sh"
+
+# prints the script's usage options
+function print_help {
+	echo "Usage:"
+	echo "	$0 -H <hostname> [options] [arguments to 'op signin']"
+	echo "	$0 -h"
+	echo
+	echo "Options:"
+	echo "	-h	Print this help and exit"
+	echo "	-H <hostname>"
+	echo "		Remote hostname"
+	echo "	-i <identity>"
+	echo "		Use an existing identity instead of generating a new one (e.g."
+	echo "		('-i id_rsa' will use private key 'id_rsa' and public key"
+	echo "		'id_rsa.pub')"
+	echo "	-t <title>"
+	echo "		Title for the new 1Password item (default is user@host)"
+	echo "	-u <username>"
+	echo "		Remote username (default is current username)"
+	echo "	-y	Perform all actions automatically"
+	echo
+	echo "See 'op signin --help' for additional arguments to 'op signin'."
+	echo "(If you run 'op signin' at least once before running this script"
+	echo "you shouldn't need any additional arguments.)"
+}
+
+# prompts the user to continue (returns 0), skip (returns 1), or abort (exit the
+# script immediately), using the arguments as a prompt message
+function confirm {
+	if [ ! -z $skip_confirms ]; then
+		echo "$* (-y specified, continuing)"
+		return 0
+	fi
+
+	while true; do
+		read -p "$* [(continue)/skip/abort]: " answer
+
+		case $answer in
+			[Cc]|continue|"")
+				return 0
+				;;
+			[Ss]|skip)
+				return 1
+				;;
+			[Aa]|abort)
+				echo "Aborted"
+				exit 0
+				;;
+		esac
+	done
+}
+
+OPTIND=1
+ssh_host=""
+ssh_user="$(id -u -n)"
+title=""
+key_file=""
+skip_confirms=""
+while getopts "hH:i:t:u:y" opt; do
+	case "$opt" in
+	h)
+		print_help
+		exit 0
+		;;
+	H)
+		ssh_host="$OPTARG"
+		;;
+	i)
+		key_file="$OPTARG"
+		;;
+	t)
+		title="$OPTARG"
+		;;
+	u)
+		ssh_user="$OPTARG"
+		;;
+	y)
+		skip_confirms="1"
+		;;
+	esac
+done
+shift $((OPTIND-1))
+[ "${1:-}" = "--" ] && shift
+
+# TODO: allow overriding this with an option
+temp_storage_root="$default_temp_storage_root"
+
+if [ -z $ssh_host ]; then
+	echo "Option -H is required" >&2
+	print_help
+	exit 1
+fi
+
+if [ -z "$key_file" ]; then
+	cleanup_key_pair="1"
+	key_file="$dirname/temp_id_rsa"
+	# TODO: generate this somewhere it won't be written to disk (use temp dir?)
+	# TODO: can we read the new keys into variables here and immediately delete
+	#       the file to avoid having to set another variable to remember to
+	#       delete it later?
+	echo "Generating new keypair..."
+	# TODO: option for customizing key comment
+	ssh-keygen -f "$key_file" -N "" -C "$(id -un)@$(hostname) -> $ssh_user@$ssh_host" -q
+else
+	if [ -f "$key_file" ] && [ -f "$key_file.pub" ]; then
+		echo "Using existing keypair $key_file and $key_file.pub (specified by -f)"
+	else
+		echo "One of $key_file and $key_file.pub does not exist (specified by -f)" >&2
+		exit 1
+	fi
+fi
+
+op_signin $@
+
+template="$(cat $dirname/itemtemplate.json)"
+item_data="$(echo "$template" | jq \
+	--arg ssh_host "$ssh_host" \
+	--arg ssh_user "$ssh_user" \
+	--rawfile ssh_private_key "$key_file" \
+	--rawfile ssh_public_key "$key_file.pub" \
+	'
+		(.sections[0].fields[] | select(.n == "url")) |= (
+			. | .v |= $ssh_host
+		) |
+		(.sections[0].fields[] | select(.n == "username")) |= (
+			. | .v |= $ssh_user
+		) |
+		(.sections[0].fields[] | select(.n == "ssh_private_key")) |= (
+			. | .v = $ssh_private_key
+		) |
+		(.sections[0].fields[] | select(.n == "ssh_public_key")) |= (
+			. | .v = $ssh_public_key
+		)
+	'
+)"
+
+if confirm "Saving new item in 1password"; then
+	encoded_item_data="$(echo "$item_data" | op encode)"
+	new_uuid="$(op create item Server --title "${title:-$ssh_host}" "$encoded_item_data" | jq '.uuid' --raw-output)"
+else
+	# you can skip uploading the key to 1Password, but we still need a fake
+	# UUID so the key can have a name in the filesystem if stored
+	new_uuid="_local_only_$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 14 | head -n 1)"
+fi
+
+if confirm "Copying public key to host: ssh-copy-id -i '$key_file' '$ssh_host'"; then
+	ssh-copy-id -i "$key_file" "$ssh_host"
+fi
+
+if confirm "Adding key for local use"; then
+	# cat "$key_file" | ssh-add -
+	configure_keys "$temp_storage_root" "$new_uuid" "$private_key" "$public_key" "$ssh_host" "$ssh_user"
+fi
+
+if [ ! -z $cleanup_key_pair ]; then
+	rm "$key_file" "$key_file.pub"
+fi
+
+op signout
+
+echo "Done."

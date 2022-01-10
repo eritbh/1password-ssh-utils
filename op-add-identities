@@ -1,0 +1,45 @@
+#!/bin/bash
+
+dirname="$(dirname "$(realpath $0)")"
+source "$dirname/common.sh"
+
+# TODO: allow overriding this with an option
+temp_storage_root="$default_temp_storage_root"
+
+op_signin $@
+
+# Get all the items we care about
+# TODO: filter by a tag instead of by the server template?
+items=($(op list items | jq --raw-output '
+	.[]
+	| select(.templateUuid == "110")
+	| .uuid
+'))
+for uuid in "${items[@]}"; do
+	item_data="$(op get item "$uuid")"
+
+	item_title="$(echo "$item_data" | jq --raw-output '.overview.title')"
+	# TODO: don't assume sections[0] is the right section
+	item_fields="$(echo "$item_data" | jq '.details.sections[0].fields')"
+
+	host="$(echo "$item_fields" | jq --raw-output '
+		.[] | select(.n == "url") | .v
+	')"
+	user="$(echo "$item_fields" | jq --raw-output '
+		.[] | select(.n == "username") | .v
+	')"
+	private_key="$(echo "$item_fields" | jq --raw-output '
+		.[] | select(.n == "ssh_private_key") | .v
+	')"
+	public_key="$(echo "$item_fields" | jq --raw-output '
+		.[] | select(.n == "ssh_public_key") | .v
+	')"
+
+	echo "Key: \"$item_title\" ($user@$host)"
+
+	configure_keys "$temp_storage_root" "$uuid" "$private_key" "$public_key" "$host" "$user"
+done
+
+op signout
+
+echo "Done."
