@@ -1,0 +1,6 @@
+#!/bin/bash
+
+dirname="$(dirname "$(realpath $0)")"
+source "$dirname/common.sh"
+
+rm -r "$temp_storage_root"

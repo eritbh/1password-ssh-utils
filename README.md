@@ -25,7 +25,7 @@ Search for SSH key items in your vault and read them all into temporary storage.
 
 ### Remove all local SSH credentials
 
-    $ rm -r /tmp/op-ssh-utils
+    $ ./op-remove-identities
 
 # Todos
 
