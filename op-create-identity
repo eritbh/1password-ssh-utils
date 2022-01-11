@@ -86,9 +86,6 @@ done
 shift $((OPTIND-1))
 [ "${1:-}" = "--" ] && shift
 
-# TODO: allow overriding this with an option
-temp_storage_root="$default_temp_storage_root"
-
 if [ -z $ssh_host ]; then
 	echo "Option -H is required" >&2
 	print_help

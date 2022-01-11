@@ -3,9 +3,6 @@
 dirname="$(dirname "$(realpath $0)")"
 source "$dirname/common.sh"
 
-# TODO: allow overriding this with an option
-temp_storage_root="$default_temp_storage_root"
-
 op_signin $@
 
 # Get all the items we care about

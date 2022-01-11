@@ -5,7 +5,7 @@ if [ -d /dev/shm ]; then
 else
 	default_tmpdir="/tmp"
 fi
-export default_temp_storage_root="${OP_KEY_STORAGE_LOCATION:-${TMPDIR:-$default_tmpdir}/op-ssh-utils}"
+export temp_storage_root="${OP_KEY_STORAGE_LOCATION:-${TMPDIR:-$default_tmpdir}/op-ssh-utils}"
 
 # Signs into `op` or exits the script
 function op_signin {
