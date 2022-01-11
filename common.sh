@@ -1,12 +1,17 @@
+# If the user doesn't specify anything, use /dev/shm if
+# available, otherwise use /tmp and hopefully it's tmpfs.
+if [ -d /dev/shm ]; then
+	default_tmpdir="/dev/shm"
+else
+	default_tmpdir="/tmp"
+fi
+export default_temp_storage_root="${OP_KEY_STORAGE_LOCATION:-${TMPDIR:-$default_tmpdir}/op-ssh-utils}"
+
 # Signs into `op` or exits the script
 function op_signin {
 	echo "Signing into 1Password..."
 	eval "$(op signin $@ || echo 'echo "Sign-in failed." >&2; exit 1')"
 }
-
-# Ideally something that won't ever actually be written to disk, but we'll worry
-# about that later
-export default_temp_storage_root="/tmp/op-ssh-utils"
 
 # Writes the public/private key pair for a given vault item to the temporary
 # storage directory, and adds a rule to the temporary ssh config for the host

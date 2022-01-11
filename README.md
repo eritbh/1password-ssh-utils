@@ -6,6 +6,8 @@ Utilities for storing and loading SSH keys with 1password
 
 Note that interactive execution is not supported for any of these scripts, since `op signin` is required for all scripts and itself requires interactive password input.
 
+By default, the key storage location is `$TMPDIR/op-ssh-utils`, where `TMPDIR` defaults to `/dev/shm` or `/tmp`, whichever is available. The key storage location can be overridden for all commands with the `OP_KEY_STORAGE_LOCATION` environment variable.
+
 ### Create a new SSH item in the vault
 
     $ ./op-create-identity -H <hostname>
@@ -27,7 +29,6 @@ Search for SSH key items in your vault and read them all into temporary storage.
 
 # Todos
 
-- Find a better place to store keys locally (is /dev/shm appropriate?) + allow user to customize that location
 - Use a different temporary location to allow multiple users on the same system to use the tool (random folder names in the folder symlinked to `~/.local` or something? maybe just make it a bashrc script that automates adding the `Include` rule to the user's SSH config without requiring a persistent directory name across logins?)
 - Better vault item searching/handling, customization of the item template
   - Guidance for adding items to 1Password manually so that this tool can pick them up
