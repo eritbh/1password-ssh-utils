@@ -18,7 +18,7 @@ Ensure that you also have the [1Password CLI](1password-cli) available as `op` v
 
 Note that interactive execution is not supported for any of these scripts, since `op signin` is required for all scripts and itself requires interactive password input.
 
-By default, the key storage location is `$TMPDIR/op-ssh-utils`, where `TMPDIR` defaults to `/dev/shm` or `/tmp`, whichever is available. The key storage location can be overridden for all commands with the `OP_KEY_STORAGE_LOCATION` environment variable.
+By default, the key storage location is `$TMPDIR/op-ssh-utils`, where `TMPDIR` defaults to `/dev/shm` or `/tmp`, whichever is available. The key storage location can be overridden for all commands with the `OP_SSH_STORAGEDIR` environment variable.
 
 ### Create a new SSH item in the vault
 
