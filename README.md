@@ -14,6 +14,12 @@ Ensure that you also have the [1Password CLI](1password-cli) available as `op` v
 
 [1password-cli]: https://support.1password.com/command-line-getting-started/
 
+### Automatically fetch keys before using SSH
+
+In bash/zsh, you can define an alias for the `ssh` command which ensures your keys are fetched before connecting to a server, like so:
+
+    alias ssh="op-ssh-fetch -n [arguments to 'op signin']; ssh"
+
 ## Usage
 
 Note that interactive execution is not supported for any of these scripts, since `op signin` is required for all scripts and itself requires interactive password input.
@@ -34,6 +40,8 @@ Create a new vault item associated with the given host and the current username,
     $ op-ssh-fetch
 
 Search for SSH key items in your vault and read them all into temporary storage. Public and private keys will be saved to `/tmp/op-ssh-utils/keys` with appropriate permissions, and an SSH config file will be saved to `/tmp/op-ssh-utils/ssh_config` which can be included from your personal SSH config (usually `~/.ssh/config`) via `Include /tmp/op-ssh-utils`.
+
+- Use `-n` to do nothing if keys already exist. This is useful for shell aliases.
 
 ### Remove all local SSH credentials
 
