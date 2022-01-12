@@ -3,6 +3,17 @@
 dirname="$(dirname "$(realpath $0)")"
 source "$dirname/../common.sh"
 
+OPTIND=1
+while getopts "hn" opt; do
+	case "$opt" in
+	n)
+		if [ -f "$temp_storage_root/ssh_config" ]; then
+			exit 0
+		fi
+		;;
+	esac
+done
+
 op_signin $@
 
 # Get all the items we care about
