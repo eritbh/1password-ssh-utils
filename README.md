@@ -1,6 +1,6 @@
 # 1password-ssh-utils
 
-Utilities for storing and loading SSH keys with 1password
+Utilities for storing and loading SSH keys with 1Password. Use a unique key for every host you connect to, without worrying about keeping them straight across your local machines.
 
 ## Installation
 
@@ -11,6 +11,8 @@ Clone the repo and add the `bin` folder to your `PATH`. For example, with bash:
     echo 'export PATH="~/.local/1password-ssh-utils/bin:$PATH"' >> ~/.bashrc
 
 Ensure that you also have the [1Password CLI](1password-cli) available as `op` via `PATH`.
+
+[1password-cli]: https://support.1password.com/command-line-getting-started/
 
 ## Usage
 
