@@ -2,6 +2,16 @@
 
 Utilities for storing and loading SSH keys with 1password
 
+## Installation
+
+Clone the repo and add the `bin` folder to your `PATH`. For example, with bash:
+
+    cd ~/.local
+    git clone https://github.com/eritbh/1password-ssh-utils.git
+    echo 'export PATH="~/.local/1password-ssh-utils/bin:$PATH"' >> ~/.bashrc
+
+Ensure that you also have the [1Password CLI](1password-cli) available as `op` via `PATH`.
+
 ## Usage
 
 Note that interactive execution is not supported for any of these scripts, since `op signin` is required for all scripts and itself requires interactive password input.
