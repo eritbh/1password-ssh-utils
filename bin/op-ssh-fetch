@@ -3,9 +3,27 @@
 dirname="$(dirname "$(realpath $0)")"
 source "$dirname/../common.sh"
 
+function print_help {
+	echo "Usage:"
+	echo "	$0 [options] [arguments to 'op signin']"
+	echo "	$0 -h"
+	echo
+	echo "Options:"
+	echo "	-h	Print this help and exit"
+	echo "	-n	Exit immediately and return 0 if keys have already been pulled"
+	echo
+	echo "See 'op signin --help' for additional arguments to 'op signin'."
+	echo "(If you run 'op signin' at least once before running this script"
+	echo "you shouldn't need any additional arguments.)"
+}
+
 OPTIND=1
 while getopts "hn" opt; do
 	case "$opt" in
+	h)
+		print_help
+		exit 0
+		;;
 	n)
 		if [ -f "$temp_storage_root/ssh_config" ]; then
 			exit 0
