@@ -54,12 +54,12 @@ function confirm {
 	done
 }
 
-OPTIND=1
 ssh_host=""
 ssh_user="$(id -u -n)"
 title=""
 key_file=""
 skip_confirms=""
+OPTIND=1
 while getopts "hH:i:t:u:y" opt; do
 	case "$opt" in
 	h)
