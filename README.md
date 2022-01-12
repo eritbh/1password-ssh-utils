@@ -22,7 +22,7 @@ By default, the key storage location is `$TMPDIR/op-ssh-utils`, where `TMPDIR` d
 
 ### Create a new SSH item in the vault
 
-    $ ./op-create-identity -H <hostname>
+    $ op-ssh-create -H <hostname>
 
 Create a new vault item associated with the given host and the current username, generating a new SSH key specifically for that user on that host. It then optionally registers the new key for immediate local use.
 
@@ -31,13 +31,13 @@ Create a new vault item associated with the given host and the current username,
 
 ### Pull all SSH items in the vault for use locally
 
-    $ ./op-add-identities
+    $ op-ssh-fetch
 
 Search for SSH key items in your vault and read them all into temporary storage. Public and private keys will be saved to `/tmp/op-ssh-utils/keys` with appropriate permissions, and an SSH config file will be saved to `/tmp/op-ssh-utils/ssh_config` which can be included from your personal SSH config (usually `~/.ssh/config`) via `Include /tmp/op-ssh-utils`.
 
 ### Remove all local SSH credentials
 
-    $ ./op-remove-identities
+    $ op-ssh-remove
 
 # Todos
 
