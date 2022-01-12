@@ -34,7 +34,7 @@ for uuid in "${items[@]}"; do
 
 	echo "Key: \"$item_title\" ($user@$host)"
 
-	configure_keys "$temp_storage_root" "$uuid" "$private_key" "$public_key" "$host" "$user"
+	configure_keys "$temp_storage_root" "$uuid" "$public_key" "$private_key" "$host" "$user"
 done
 
 op signout
