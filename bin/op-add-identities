@@ -1,7 +1,7 @@
 #!/bin/bash
 
 dirname="$(dirname "$(realpath $0)")"
-source "$dirname/common.sh"
+source "$dirname/../common.sh"
 
 op_signin $@
 
