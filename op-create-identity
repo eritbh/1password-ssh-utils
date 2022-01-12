@@ -144,8 +144,8 @@ else
 	new_uuid="_local_only_$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 14 | head -n 1)"
 fi
 
-if confirm "Copying public key to host: ssh-copy-id -i '$key_file' '$ssh_host'"; then
-	ssh-copy-id -i "$key_file" "$ssh_host"
+if confirm "Copying public key to host: ssh-copy-id -i '$key_file' '$ssh_user@$ssh_host'"; then
+	ssh-copy-id -i "$key_file" "$ssh_user@$ssh_host"
 fi
 
 if confirm "Adding key for local use"; then
