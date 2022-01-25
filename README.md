@@ -81,9 +81,3 @@ If you would like to use a different account for this script than the cached one
     op-ssh-fetch my.1password.com you@email.com YOUR-SECRET-KEY
 
 See `op signin --help` for details about what arguments are expected.
-
-# Todos
-
-- Use a different temporary location to allow multiple users on the same system to use the tool (random folder names in the folder symlinked to `~/.local` or something? maybe just make it a bashrc script that automates adding the `Include` rule to the user's SSH config without requiring a persistent directory name across logins?)
-- Better vault item searching/handling, customization of the item template
-  - Guidance for adding items to 1Password manually so that this tool can pick them up
