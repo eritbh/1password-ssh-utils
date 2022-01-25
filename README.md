@@ -36,7 +36,7 @@ Note that the path to this file may be different on systems where `/dev/shm` is 
 
 In many shells, you can define an alias for the `ssh` command which ensures your keys are fetched before connecting to a server, like so:
 
-    alias ssh="op-ssh-fetch -n; ssh"
+    alias ssh="op-ssh-fetch -n && ssh"
 
 ## Usage
 
