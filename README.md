@@ -20,9 +20,8 @@ You should run `op signin` at least once before using these scripts in order to 
 
 Clone the repo anywhere on your computer and add the `bin` folder to your `PATH`. For example, with bash:
 
-    cd ~/.local
-    git clone https://github.com/eritbh/1password-ssh-utils.git
-    echo 'export PATH="~/.local/1password-ssh-utils/bin:$PATH"' >> ~/.bashrc
+    git clone https://github.com/eritbh/1password-ssh-utils.git ~/.1password-ssh-utils
+    echo 'export PATH="$HOME/.1password-ssh-utils/bin:$PATH"' >> ~/.bashrc
 
 ### Setting up your SSH config
 
