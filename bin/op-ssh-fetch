@@ -31,6 +31,8 @@ while getopts "hn" opt; do
 		;;
 	esac
 done
+shift $((OPTIND-1))
+[ "${1:-}" = "--" ] && shift
 
 op_signin $@
 
