@@ -11,7 +11,7 @@ Utilities for storing and loading SSH keys with 1Password. Use a unique key for 
 
 These executables (`op` and `jq`) must be available on `PATH`.
 
-You should run `op signin` at least once before using these scripts in order to cache your basic account information. See `op signin --help` for more information.
+You should run `op signin` at least once before using these scripts in order to cache your basic account information. See ["1Password Accounts"](#1password-accounts) for more information.
 
 [1password-cli]: https://support.1password.com/command-line-getting-started/
 [jq]: https://stedolan.github.io/jq/
@@ -71,9 +71,13 @@ The location where keys and the temporary SSH config file are stored is given by
 
 Within this location, the SSH config file is stored in `ssh_config`, and key pairs are stored in the `keys` subdirectory according to the UUID of their associated 1Password item.
 
-## Using a different 1Password account
+## 1Password Accounts
 
-Normally, running `op signin` at least once before using these scripts caches some of your 1Password account details in your home directory. This cached account is what this script will attempt to log in as by default. If you would like to use a different account for this script than the cached one, you can pass additional arguments to `op-ssh-fetch` and `op-ssh-create` which will be passed through directly to `op signin`. For example:
+Normally, running `op signin` at least once before using these scripts caches some of your 1Password account details in your home directory. This cached account is what this script will attempt to log in as by default. The full invocation may look something like this:
+
+    eval $(op signin my.1password.com you@email.com YOUR-SECRET-KEY)
+
+If you would like to use a different account for this script than the cached one, you can pass additional arguments to `op-ssh-fetch` and `op-ssh-create` which will be passed through directly to `op signin`. For example:
 
     op-ssh-fetch my.1password.com you@email.com YOUR-SECRET-KEY
 
