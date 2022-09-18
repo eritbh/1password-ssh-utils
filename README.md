@@ -6,14 +6,14 @@ Utilities for storing and loading SSH keys with 1Password. Use a unique key for 
 
 ### Dependencies
 
-- [1Password CLI][1password-cli]
+- [1Password CLI v1][1password-cli-v1]
 - [jq][jq]
 
 These executables (`op` and `jq`) must be available on `PATH`.
 
 You should run `op signin` at least once before using these scripts in order to cache your basic account information. See ["1Password Accounts"](#1password-accounts) for more information.
 
-[1password-cli]: https://support.1password.com/command-line-getting-started/
+[1password-cli-v1]: https://app-updates.agilebits.com/product_history/CLI
 [jq]: https://stedolan.github.io/jq/
 
 ### Adding the scripts
