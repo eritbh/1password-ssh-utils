@@ -113,7 +113,7 @@ fi
 
 op_signin $@
 
-template="$(cat $dirname/itemtemplate.json)"
+template="$(cat $dirname/../itemtemplate.json)"
 item_data="$(echo "$template" | jq \
 	--arg ssh_host "$ssh_host" \
 	--arg ssh_user "$ssh_user" \
