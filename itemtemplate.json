@@ -17,6 +17,12 @@
 					"v": "SSH_USERNAME"
 				},
 				{
+					"k": "concealed",
+					"n": "password",
+					"t": "password",
+					"v": ""
+				},
+				{
 					"k": "string",
 					"n": "ssh_public_key",
 					"t": "public key",
