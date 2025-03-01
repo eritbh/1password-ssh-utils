@@ -1,3 +1,6 @@
+> [!important]
+> This tool is no longer being worked on. It's based on the deprecated 1Password CLI v1 which may not work anymore. You probably want to migrate to [the 1Password SSH Agent](https://developer.1password.com/docs/ssh/) instead of using these scripts (though [their recommended workarounds for managing per-host keys](https://developer.1password.com/docs/ssh/agent/advanced/#match-key-with-host) aren't the best, and could probably be improved with additional scripting).
+
 # 1password-ssh-utils
 
 Utilities for storing and loading SSH keys with 1Password. Use a unique key for every host you connect to, without worrying about keeping them straight across your local machines.
